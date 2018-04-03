@@ -1,0 +1,41 @@
+imageinfo       Identify information for the image
+kdbgscan        Search for and dump potential KDBG values
+
+pslist          Print all running processes by following the EPROCESS lists
+psscan          Pool scanner for process objects
+filescan        Pool scanner for file objects
+pstree          Print process list as a tree
+dlllist         Print list of loaded dlls for each process
+
+getsids         Print the SIDs owning each process <this can help you identify processes which have maliciously escalated privileges and which processes belong to specific users.>
+envars          Display process environment variables
+privs           Display process privileges
+verinfo         Prints out the version information from PE images
+
+screenshot      Save a pseudo-screenshot based on GDI windows <use with --dump-dir>
+
+cmdline         Display process command-line arguments
+cmdscan         Extract command history by scanning for _COMMAND_HISTORY
+consoles        Extract command history by scanning for _CONSOLE_INFORMATION
+
+dlldump         Dump DLLs from a process address space
+procdump        Dump a process to an executable file sample
+dumpfiles       Extract memory mapped and cached files < volatility -f xp-laptop-2005-06-25.img --profile=WinXPSP2x86 dumpfiles -D . -r '.dat'>
+  -r REGEX, --regex=REGEX
+                        Dump files matching REGEX
+  -i, --ignore-case     Ignore case in pattern match
+  -o OFFSET, --offset=OFFSET
+                        Dump files for Process with physical address OFFSET
+  -D DUMP_DIR, --dump-dir=DUMP_DIR
+                        Directory in which to dump extracted files
+
+
+
+connections     Print list of open connections [Windows XP and 2003 Only]
+connscan        Pool scanner for tcp connections
+imagecopy       Copies a physical address space out as a raw DD image
+lsadump         Dump (decrypted) LSA secrets from the registry
+raw2dmp         Converts a physical memory sample to a windbg crash dump
+sockets         Print list of open sockets
+sockscan        Pool scanner for tcp socket objects
+timeliner       Creates a timeline from various artifacts in memory

@@ -1,0 +1,77 @@
+﻿crunch <min-len> <max-len> [<charset string>] [options]
+-b    =>    Specifies the size of the output file
+            ex: -b 50MB
+
+-c    =>
+            Specifies the number of lines to write to output file
+            ex: -c 100
+
+-d    =>    Limits the number of duplicate characters.
+            -d 2@ limits the lowercase alphabet to output like aab and aac.
+            aaa would not be generated
+
+-e    =>    Specifies when crunch should stop early
+            ex: -e "magdy"
+
+-i    =>   Inverts  the  output  so  instead  of  aaa,aab,aac,aad,  etc  you get
+           aaa,baa,caa,daa,aba,bba, etc
+
+-o    =>   Specifies the file to write the output to, eg: wordlist.txt
+
+-p    =>   -p charset or -p word1 word2
+           say the charset is abc and max length is 4..  Crunch will
+           by default generate 3^4 = 81 words.  This option will instead gererate
+           3!  = 3x2x1 = 6 words (abc, acb, bac, bca, cab, cba)
+
+-q    =>   -q filename.txt
+           This is like the -p option except it gets the input from filename.txt
+
+-r    =>   Tells crunch to resume generate words from where it left off.
+           -r only works if you use -o.  You must use the same command as
+           the  original  command  used  to  generate the words
+
+-t    =>   -t @,%^
+           Specifies a pattern, eg: @@god@@@@ where the only  the  @'s,  ,'s,
+           %'s, and ^'s will change.
+           @ will insert lower case characters
+           , will insert upper case characters
+           % will insert numbers
+           ^ will insert symbols
+           ex: -t "magdy%%%"
+
+-s    =>   startblock
+           Specifies a starting string, eg: 03god22fs
+           ex: crunch 2 3 -s bb
+                  bb
+                  bc
+                  bd
+                  be
+                  bf
+                  bg...
+
+
+-z    =>   gzip, bzip2, lzma, and 7z
+           Compresses the output from the -o option.   Valid  parameters  are
+           gzip, bzip2, lzma, and 7z.
+           gzip  is  the  fastest but the compression is minimal.  bzip2 is a
+           little slower than gzip but has better compression.  7z is slowest
+           but has the best compression.
+
+
+==  Examples ==
+
+       crunch 1 6 abcdefg\
+       there is a space at the end of the character string.  In order for crunch
+       to  use  the  space you will need to escape it using the \ character.  In
+       this example you could also put quotes around the letters  and  not  need
+       the \, i.e. "abcdefg ".  Crunch will display a wordlist using the characΓÇÉ
+       ter set abcdefg  that starts at a and ends at (6 spaces)
+
+
+       crunch 8 8 -f charset.lst mixalpha-numeric-all-space -o  wordlist.txt  -t
+       @@dog@@@ -s cbdogaaa
+       crunch  should generate a 8 character wordlist using the mixalpha-number-
+       all-space character set from charset.lst and will write the wordlist to a
+       file  named  wordlist.txt.   The file will start at cbdogaaa and end at "
+       dog   "
+
