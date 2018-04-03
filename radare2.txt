@@ -1,0 +1,141 @@
+radare2 --		         -> open radare without any program
+radare2 ./crackme                -> open radare with a file 
+radare2 -d ./crackme             -> open in debugging mode
+radare2 -w ./crackme             -> open in writing mode 
+
+e asm.pseudo = true/false        -> enable/disable pseudocode in disassembly
+e scr.utf8 = true                -> show cool arrows that do not look like crap
+
+Pd [file]                        -> delete project
+Pl                               -> list all projects
+Po [file]                        -> open project
+Ps [file]                        -> save project
+
+oo                               -> reopen current file
+oo+                              -> reopen in read-write
+oob                              -> reopen loading rbin info
+ood                              -> reopen in debug mode
+
+aaaa	                         -> analyze all
+s	                         -> Print current address
+s addr	                         -> Seek to address
+s sym.main                       -> Seek to function
+s-	                         -> Undo seek
+s+	                         -> Redo seek
+
+axt @@ str.*                     -> find data/code references to this address [here we are looking for data references to available strings].
+afl				 -> list functions
+aflc			         -> count of functions
+afll			         -> list functions in verbose mode
+aflq			         -> list functions in quiet mode
+afa                              -> show function arguments
+afv                              -> show function variables
+afvn [oldname] [newname]         -> rename function variables
+afvt [name] [new_type]           -> set function variable type
+afvd [name]                      -> display the value of args/locals in the debugger
+
+CC                               -> list all comments in human friendly form
+CC  [text]                       -> append comment at current address
+CC+ [text]                       -> append comment at current address
+CC!                              -> edit comment using cfg.editor (vim, ..)
+
+s str.foo    ; w bar             -> replase string 'foo' by string 'bar'
+s <addr>     ; wa jmp <addr>     -> write opcode, separated by ';' (use '"' around the command)
+s str.foobar ; ww foobar         ->  write wide string 'f\x00o\x00o\x00b\x00a\x00r\x00'
+
+px                               -> show hexdump
+pxl                              -> display N lines (rows) of hexdump
+pxo                              -> show octal dump
+pxr [pxr @ (e/r)sp]              -> show words with references to flags and code
+pxX                              -> show N words of hex-less hexdump
+
+pdf			         -> disassemble function
+pdr                              -> recursive disassemble across the function graph
+pds                              -> disassemble summary (strings, calls, jumps, refs) (see pdsf and pdfs)
+pd~[str/cmp/jmp/mov...]          -> search for something in the disassembly [works like grep]
+pdc                              -> pseudo disassembler output in C-like syntax
+pd 1000 | grep 'str\.'           -> disassemble 1000 instractions and grep instractions with strings
+
+i                                -> Show info of current file
+iz                               -> Strings in data sections                
+is                               -> Symbols
+ie                               -> Entrypoint
+il                               -> Libraries
+iM                               -> Show main address
+izz                              -> Search for Strings in the whole binary
+iZ                               -> Guess size of binary program
+
+/ foo\x00                        -> search for string 'foo\0'
+//                               -> repeat last search
+/a jmp eax                       -> assemble opcode and search its bytes
+/A jmp                           -> find analyzed instructions of this type
+/i foo                           -> search for string 'foo' ignoring case
+/w foo                           -> search for wide string 'f\0o\0o\0'
+/wi foo                          -> search for wide string ignoring case 'f\0o\0o\0'
+/x ff..33                        -> search for hex string ignoring some nibbles
+/x ff0033                        -> search for hex string
+/x ff43:ffd0                     -> search for hexpair with mask
+/z min max                       -> search for strings of given size
+
+dr                               -> Show 'gpr' registers
+drr                              -> Show registers references (telescoping) [most used]
+drt all                          -> Show all registers ["gpr","drx","fpu","mmx","xmm","flg","seg"]
+drt flg                          -> Show flag registers
+dr <register>=<val>              -> Set register value
+dr=                              -> Show registers in columns
+dr <register>                    -> Show value of given register
+?  <register/other values>       -> Show value of given register in all formats
+drd                              -> Show only different registers
+dro                              -> Show previous (old) values of registers
+
+db                       List breakpoints
+db sym.main              Add breakpoint into sym.main
+db <addr>                Add breakpoint
+db- <addr>               Remove breakpoint
+db-*                     Remove all the breakpoints
+db.                      Show breakpoint info in current offset
+dbc <addr> <cmd>         Run command when breakpoint is hit
+dbC <addr> <cmd>         Run command but continue until <cmd> returns zero
+dbd <addr>               Disable breakpoint
+dbe <addr>               Enable breakpoint
+dbs <addr>               Toggle breakpoint
+dbf                      Put a breakpoint into every no-return function
+dbn [<name>]             Show or set name for current breakpoint
+
+
+ds               Step one instruction
+ds <num>         Step <num> instructions
+dsb              Step back one instruction
+dsf              Step until end of frame
+dsi <cond>       Continue until condition matches
+
+
+agf > graph.txt                  -> Render ascii art of graphiz graph and redirect it to a file 
+f myinput =  0x601080            -> set myinput value to an address
+f var = eax ; ? var              -> store eax value inside var variable then show it's value in several formats
+
+
+V!                               -> visual ascii art panels
+  :                              -> run r2 command in prompt
+  x                              -> close the current panel
+  V                              -> view graph
+  C                              -> toggle color
+  s/S                            -> step in/ step over
+  u/U                            -> undo/redo seek
+  q                              -> quit
+  R                              -> randomize color palette
+  L/H                            -> move verical column split 
+  .                              -> seek to pc or entrypoint
+  TAB/J/K                        -> select prev/next panels
+  ENTER                          -> maximize the current panel 
+  
+VV                               -> graph mode
+  P/p                            -> switch between types of graphs 
+  '                              -> show/hide comments
+  TAB                            -> seek to the next node
+  t                              -> seek to True target
+  f                              -> seek to False target
+  :                              -> run r2 command in prompt
+  
+Demo : https://www.megabeets.net/reversing-a-self-modifying-binary-with-radare2/
+
