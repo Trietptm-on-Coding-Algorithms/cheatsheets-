@@ -137,5 +137,6 @@ VV                               -> graph mode
   f                              -> seek to False target
   :                              -> run r2 command in prompt
   
-Demo : https://www.megabeets.net/reversing-a-self-modifying-binary-with-radare2/
-
+Demo :
+   https://www.megabeets.net/reversing-a-self-modifying-binary-with-radare2/
+https://asciinema.org/a/170931
