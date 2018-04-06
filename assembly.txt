@@ -1,0 +1,319 @@
+== 32 bit registers == 
+
+eax => the accumulator register    [ RAX.64bit ]
+  |  EAX         | 32bit
+  ==========     |
+        AX       | 16bit
+       =====     |
+       AH|AL     | 8bit
+
+ebx => the base address register   [ RBX.64bit ]
+  |  EBX         | 32bit
+  ==========     |
+       | BX      | 16bit
+       =====     |
+       BH|BL     | 8bit
+
+ecx => the count register          [ RCX.64bit ]
+  |  ECX         | 32bit
+  ==========     |
+       | CX      | 16bit
+       =====     |
+       CH|CL     | 8bit
+
+edx => the data register           [ RDX.64bit ]
+  |  EDX         | 32bit
+  ==========     |
+       | DX      | 16bit
+       =====     |
+       DH|DL     | 8bit
+
+esi => source index register       [ RSI.64bit ]
+  |  ESI         | 32bit
+  ==========     |
+      | SI       | 16bit
+
+edi => destination index register  [ RDI.64bit ]
+  |  EDI         | 32bit
+  ==========     |
+      | DI       | 16bit
+
+ebp => base stack pointer register [ RBP.64bit ]
+  |  EBI         | 32bit
+  ==========     |
+      | BI       | 16bit
+
+esp => stack pointer register      [ RSP.64bit ]
+     ESP         | 32bit
+  ==========     |
+      | SP       | 16bit
+
+eip => instruction address pointer [ RSP.64bit ]
+     EIP         | 32bit
+  ==========     |1
+      | IP       | 16bit
+
+eflags [RFLAGS.64bit]
+
+== 64bit regs ==
+rax
+rbx
+rcx
+rdx
+
+
+64 bit
+======
+r8   =,
+r9    |
+r10   |
+r11   |
+r12   |=> R$(reg_num)D # Dword
+r13   |        |
+r14   |        |=> R($reg_num)W|R($reg_num)B
+r15  =,                 |           |
+                        ====== ======
+                         16bit size
+
+rsi
+rdi
+rsp
+rbp
+rip
+
+================================================================================
+1  byte  (8 bit):   byte,  DB, RESB
+2  bytes (16 bit):  word,  DW, RESW
+4  bytes (32 bit):  dword, DD, RESD
+8  bytes (64 bit):  qword, DQ, RESQ
+10 bytes (80 bit):  tword, DT, REST
+16 bytes (128 bit): oword, DO, RESO, DDQ, RESDQ
+32 bytes (256 bit): yword, DY, RESY
+64 bytes (512 bit): zword, DZ, RESZ
+
+binary
+   Base 2          *============ 001101 ============*
+      0/1    low signifcant bit            most signifcant bit
+                   (LSB)                          (MSB)
+
+hexadecimal
+   Base 16
+     FEDCBA9876543210
+
+Decimal
+   Base 0-9
+
+
+              word
+   |===========^==========|
+   |   bit      nibble    |     byte      double word
+   |    ^       ==^==     | =====^====         ^
+  || 01|1|00100 |0110|0100| |01100100| 01100100|
+  |============================================|
+
+
+================================================================================
+== flags == 
+
+Carry flag [CF] :
+   set to 1 when there is an unsigned overflow.
+   for example when you add byte 255+1 [ result isn't in range 0.255 ]
+   when there is now flow flag is set to 0
+
+zero flag [ZF] :
+   set to 1 when result is zero.
+   for none zero result is set to 1
+
+sign flag [SF] :
+   set to 1 when the result is negative.
+   when result is positive is set to zero
+
+overflow flag [OF] :
+   set to 1 when there is a signed overflow.
+   for example when you add bytes 100+50 [result isn't in range -128,127]
+
+================================================================================
+== instractions == 
+
+jmp     => Unconditional Jumps
+   Loads EIP with the specified address (i.e. the next instruction
+   executed will be the one specified by jmp).
+
+je      => Jump if Equal                  ; [ZF=1]
+   Loads EIP with the specified address, if operands of previous CMP
+   instruction are equal.
+
+jne     => Jump if Not Equal              ; [ZF=0]
+   Loads EIP with the specified address, if operands of previous CMP
+   instruction are not equal.
+
+jg      => Jump if Greater                ; [SF=OF and ZF=0]
+   Loads EIP with the specified address, if first operand of previous CMP
+   instruction is greater than the second (performs signed comparison).
+
+jge     => Jump if Greater or Equal       ; [SF=OF or ZF=1]
+   Loads EIP with the specified address, if first operand of previous CMP
+   instruction is greater than or equal to the second (performs signed
+   comparison).
+
+ja      => Jump if Above                  ; [CF=0andZF=0]
+   Loads EIP with the specified address, if first operand of previous CMP
+   instruction is greater than the second. ja is the same as jg, except
+   that it performs an unsigned comparison.
+
+jae     => Jump if Above or Equal         ; [CF=0orZF=1]
+   Loads EIP with the specified address, if first operand of previous CMP
+   instruction is greater than or equal to the second. jae is the same as
+   jge, except that it performs an unsigned comparison.
+
+jl      => Jump if Lesser                 ; [3.arg2==arg1]
+   The criteria required for a JL is that SF <> OF, loads EIP with the
+   specified address, if the criteria is meet. So either SF or OF can be
+   set but not both in order to satisfy this criteria. If we take the
+   SUB(which is basically what a CMP does) instruction as an example, we
+   have:
+          arg2 - arg1
+
+   With respect to SUB and CMP there are several cases that fulfill this
+   criteria:
+    1. arg2 < arg1 and the operation does not have overflow
+    2. arg2 > arg1 and the operation has an overflow
+
+   In case 1) SF will be set but not OF and in case 2) OF will be set but
+   not SF since the overflow will reset the most significant bit to zero
+   and thus preventing SF being set. The SF <> OF criteria avoids the
+   cases where:
+    1. arg2 > arg1 and the operation does not have overflow
+    2. arg2 < arg1 and the operation has an overflow
+    3. arg2 == arg1
+
+   In case 1) neither SF nor OF are set, in case 2) OF will be set and SF
+   will be set since the overflow will reset the most significant bit to
+   one and in case 3) neither SF nor OF will be set.
+
+jle     => Jump if Less or Equal          ; [SF<>OForZF=1.]
+   Loads EIP with the specified address, if first operand of previous CMP
+   instruction is lesser than or equal to the second. See the JL section
+   for a more detailed description of the criteria.
+
+jb      => Jump if Below                  ; [CF=1]
+   Loads EIP with the specified address, if first operand of previous CMP
+   instruction is lesser than the second. jb is the same as jl, except
+   that it performs an unsigned comparison.
+
+jbe     => Jump if Below or Equal         ; [CF=1orZF=1]
+   Loads EIP with the specified address, if first operand of previous CMP
+   instruction is lesser than or equal to the second. jbe is the same as
+   jle, except that it performs an unsigned comparison.
+
+jo      => Jump if Overflow               ; [OF=1]
+   Loads EIP with the specified address, if the overflow bit is set on a
+   previous arithmetic expression.
+
+jno     => Jump if Not Overflow           ; [OF=0]
+   Loads EIP with the specified address, if the overflow bit is not set on
+   a previous arithmetic expression.
+
+jz      => Jump if Zero                   ; [ZF=1]
+   Loads EIP with the specified address, if the zero bit is set from a
+   previous arithmetic expression. jz is identical to je.
+
+jnz     => Jump if Not Zero               ; [ZF=0]
+   Loads EIP with the specified address, if the zero bit is not set from a
+   previous arithmetic expression. jnz is identical to jne.
+
+js      => Jump if Signed                 ; [SF=1]
+   Loads EIP with the specified address, if the sign bit is set from a
+   previous arithmetic expression.
+
+jns     => Jump if Not Signed             ; [SF=0]
+   Loads EIP with the specified address, if the sign bit is not set from a
+   previous arithmetic expression.
+
+call    => Function call
+   Pushes the address of the next opcode onto the top of the stack, and
+   jumps to the specified location. This is used mostly for subroutines.
+
+ret     => return
+   Loads the next value on the stack into EIP, and then pops the specified
+   number of bytes off the stack. If val is not supplied, the instruction
+   will not pop any values off the stack after returning.
+
+loop    => Loop Instructions
+   The loop instruction decrements ECX and jumps to the address specified
+   by arg unless decrementing ECX caused its value to become zero. For
+   example:
+ mov ecx, 5
+ start_loop:
+ ; the code here would be executed 5 times
+ loop start_loop
+
+   loop does not set any flags.
+
+   loopx arg
+
+   These loop instructions decrement ECX and jump to the address specified
+   by arg if their condition is satisfied (that is, a specific flag is
+   set), unless decrementing ECX caused its value to become zero.
+     * loope loop if equal
+     * loopne loop if not equal
+     * loopnz loop if not zero
+     * loopz loop if zero
+
+enter   => Enter and Leave
+   Creates a stack frame with the specified amount of space allocated on
+   the stack.
+
+leave   => destroys the current stack frame and restores the previous frame.
+   Using Intel syntax this is equivalent to:
+      mov esp, ebp
+      pop ebp
+
+   This will set EBP and ESP to their respective value before the function
+   prologue began therefore reversing any modification to the stack that
+   took place during the prologue.
+
+
+hlt     => Halts the processor
+   Execution will be resumed after processing next
+   hardware interrupt, unless IF is cleared.
+
+nop     => No operation
+   This instruction doesn't do anything, but wastes an
+   instruction cycle in the processor. This instruction is often
+   represented as an XCHG operation with the operands EAX and EAX.
+
+lock    => Asserts #LOCK prefix on next instruction.
+
+wait    => Waits for the FPU to finish its last calculation.
+push    => push value to the stack
+   Decrease the ESP by one Dword [32bit]
+   and writing a value to the stack.
+
+pop     => pop value from the stack
+   restoring whatever is on top of the stack into a register
+   and increase the ESP by oneDword [32bit]
+
+cmp     => compare   # test instruction is doing the same
+   Compare registers values with other register or value
+   specify value for CF,ZF,SF,OF,PF,AF flags.
+
+add     => add the first operand to the second one.
+sub     => subtract the first operand from the second one.
+and,or  => logical operators.
+xor     => logical operator, its logic says if the values are the same
+           the result is zero, if else result it one.
+mov     => copy the value of aregister to another one.
+lea     => copy the value of aregister to another one.
+inc     => increment by 1 # 1++
+dec     => decrement by 1 # 1--
+mul     => multiply without signals
+imul    => multiply with signals
+   - a byte operand is multiplied by AL and the result is stored in AX
+   - a word operand is multiplied by AX and the result is stored in DX;AX
+     DX contains the High-order 16bit of the result
+   - a double operand is multiplied by EAX and the result is stored in EDX;EAX
+     EDX contains the High-order 32bit of the result
+
+
+
