@@ -68,6 +68,7 @@ int main ()
   return 0;
 }
 ```
+```
 Guess the number (1 to 10): 5
 The secret number is higher
 Guess the number (1 to 10): 8
