@@ -141,3 +141,63 @@ int main ()
 Enter a number: 73
 The value entered is 73. Its double is 146.
 ```
+
+# strcmp
+int strcmp (const char* str1, const char* str2);
+### The strcmp() function takes two strings and return an integer.
+The strcmp() compares two strings character by character. If the first character of two strings are equal, next character of two strings are compared. This continues until the corresponding characters of two strings are different or a null character '\0' is reached.
+
+It is defined in string.h header file.
+
+```C
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    char str1[] = "abcd", str2[] = "abCd", str3[] = "abcd";
+    int result;
+
+    // comparing strings str1 and str2
+    result = strcmp(str1, str2);
+    printf("strcmp(str1, str2) = %d\n", result);
+
+    // comparing strings str1 and str3
+    result = strcmp(str1, str3);
+    printf("strcmp(str1, str3) = %d\n", result);
+
+    return 0;
+}
+```
+```
+strcmp(str1, str2) = 32
+strcmp(str1, str3) = 0
+```
+
+# fopen
+FILE * fopen ( const char * filename, const char * mode );
+### Open file
+Opens the file whose name is specified in the parameter filename and associates it with a stream that can be identified in future operations by the FILE pointer returned.
+
+The operations that are allowed on the stream and how these are performed are defined by the mode parameter.
+
+The returned stream is fully buffered by default if it is known to not refer to an interactive device (see setbuf).
+
+The returned pointer can be disassociated from the file by calling fclose or freopen. All opened files are automatically closed on normal program termination.
+
+The running environment supports at least FOPEN_MAX files open simultaneously.
+```C
+/* fopen example */
+#include <stdio.h>
+int main ()
+{
+  FILE * pFile;
+  pFile = fopen ("myfile.txt","w");
+  if (pFile!=NULL)
+  {
+    fputs ("fopen example",pFile);
+    fclose (pFile);
+  }
+  return 0;
+}
+```
