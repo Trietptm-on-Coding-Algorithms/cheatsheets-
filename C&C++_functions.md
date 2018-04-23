@@ -227,3 +227,57 @@ int main ()
 ```
 ------ every programmer should know memset!
 ```
+
+# scanf
+int scanf ( const char * format, ... );
+### Read formatted data from stdin
+Reads data from stdin and stores them according to the parameter format into the locations pointed by the additional arguments.
+
+The additional arguments should point to already allocated objects of the type specified by their corresponding format specifier within the format string.
+```C
+/* scanf example */
+#include <stdio.h>
+
+int main ()
+{
+  char str [80];
+  int i;
+
+  printf ("Enter your family name: ");
+  scanf ("%79s",str);  
+  printf ("Enter your age: ");
+  scanf ("%d",&i);
+  printf ("Mr. %s , %d years old.\n",str,i);
+  printf ("Enter a hexadecimal number: ");
+  scanf ("%x",&i);
+  printf ("You have entered %#x (%d).\n",i,i);
+  
+  return 0;
+}
+```
+```
+Enter your family name: Soulie
+Enter your age: 29
+Mr. Soulie , 29 years old.
+Enter a hexadecimal number: ff
+You have entered 0xff (255).
+```
+
+# int putchar ( int character );
+### Write character to stdout
+Writes a character to the standard output (stdout).
+
+It is equivalent to calling putc with stdout as second argument.
+```C
+/* putchar example: printing the alphabet */
+#include <stdio.h>
+
+int main ()
+{
+  char c;
+  for (c = 'A' ; c <= 'Z' ; c++) putchar (c);
+
+  return 0;
+}
+```
+```ABCDEFGHIJKLMNOPQRSTUVWXYZ```
