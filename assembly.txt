@@ -297,7 +297,7 @@ pop     => pop value from the stack
 cmp     => compare   # test instruction is doing the same
    Compare registers values with other register or value
    specify value for CF,ZF,SF,OF,PF,AF flags.
-
+cdq     => Convert Doubleword to Quadword instruction extends the sign bit of EAX into the EDX register.
 add     => add the first operand to the second one.
 sub     => subtract the first operand from the second one.
 and,or  => logical operators.
