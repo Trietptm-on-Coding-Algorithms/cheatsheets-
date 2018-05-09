@@ -1,0 +1,11 @@
+-i <interface>          => Capture Packets from Specific Interface
+-c <num>                => Capture Only N Number of Packets
+-A                      => Print Captured Packets in ASCII
+-D                      => Display Available Interfaces
+-XX                     => Display Captured Packets in HEX and ASCII
+-w <filename>           => Capture and Save Packets in a File
+-r <pcapfile>           => Read Captured Packets File
+-n                      => Capture IP address Packets
+tcp/udp/icmp/arp/etc..  => Capture only Packets froom Specific Protocol
+port <portnum>          => Capture Packet from Specific Port
+src/dst <IP>            => Capture Packets from source/destination IP
