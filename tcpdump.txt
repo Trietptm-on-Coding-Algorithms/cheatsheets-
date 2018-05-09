@@ -9,3 +9,6 @@
 tcp/udp/icmp/arp/etc..  => Capture only Packets froom Specific Protocol
 port <portnum>          => Capture Packet from Specific Port
 src/dst <IP>            => Capture Packets from source/destination IP
+
+
+lsof -i :<port>         => Display Port information like program name, PID and status.
