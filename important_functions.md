@@ -87,7 +87,7 @@ Creates a mutual exclusion object that can be used by malware to ensure
 that only a single instance of the malware is running on a system at any
 given time. Malware often uses fixed names for mutexes, which can be
 good host-based indicators to detect additional installations of the malware.
-
+```
 ### CreateProcess
 ```
 Creates and launches a new process. If malware creates a new process,
